@@ -23,9 +23,6 @@ createBasicLights(scene);
 // 创建地板
 createFloor(scene);
 
-// 添加坐标轴辅助器
-addAxesHelper(scene, 200);
-
 // 创建狮子
 const lion = new Lion();
 lion.threegroup.position.set(-2, 0.3, 0);
