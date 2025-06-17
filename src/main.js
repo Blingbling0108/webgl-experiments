@@ -106,7 +106,7 @@ document.addEventListener('keydown', (event) => {
   // 重置场景
   if (event.key === 'r' || event.key === 'R') {
     camera.position.set(0, 0, 800);
-    camera.lookAt(0, 0, 0);
+    camera.lookAt(0, 50, 0);
   }
 });
 
@@ -198,4 +198,16 @@ window.addEventListener('resize', () => {
   
   // 更新说明位置
   instructions.style.top = `${window.innerHeight - instructions.offsetHeight - 20}px`;
+});
+
+// 鼠标控制风扇交互
+window.addEventListener('mousemove', (e) => {
+  mousePos.x = e.clientX;
+  mousePos.y = e.clientY;
+});
+window.addEventListener('mousedown', () => {
+  isBlowing = true;
+});
+window.addEventListener('mouseup', () => {
+  isBlowing = false;
 });
