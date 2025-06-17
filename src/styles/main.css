@@ -1,0 +1,14 @@
+/* main.css - 全局样式 */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: #222;
+  color: #eee;
+}
+
+canvas {
+  display: block;
+  margin: 0 auto;
+  background: #111;
+} 
