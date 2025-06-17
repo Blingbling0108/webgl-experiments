@@ -7,6 +7,8 @@ import Lion from './objects/Lion.js';
 import Fan from './objects/Fan.js';
 import { rule3, clamp, lerp } from './utils/math.js';
 import '../styles/main.css';
+import { addAxesHelper } from './utils/helpers.js';
+import { FPSCounter } from './counter.js';
 
 // 初始化场景、相机、渲染器
 initScene();
@@ -19,6 +21,9 @@ createBasicLights(scene);
 
 // 地板
 createFloor(scene);
+
+// 辅助器
+addAxesHelper(scene, 200);
 
 // 狮子
 const lion = new Lion();
@@ -33,11 +38,13 @@ scene.add(fan.threegroup);
 // 控制器
 const controls = createControls(camera, renderer);
 
+// 帧率计数器
+const fpsCounter = new FPSCounter({ position: 'top-right' });
+
 // 渲染循环
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
-  // 可在此处使用 math.js 的 rule3、clamp、lerp 等工具函数
   renderer.render(scene, camera);
 }
 animate();
