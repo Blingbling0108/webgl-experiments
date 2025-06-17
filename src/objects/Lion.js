@@ -10,34 +10,13 @@ export default class Lion {
         this.threegroup = new THREE.Group();
         
         // 材质定义
-        this.yellowMat = new THREE.MeshLambertMaterial({ 
-            color: 0xfdd276, 
-            flatShading: true 
-        });
-        this.redMat = new THREE.MeshLambertMaterial({ 
-            color: 0xad3525, 
-            flatShading: true 
-        });
-        this.pinkMat = new THREE.MeshLambertMaterial({ 
-            color: 0xe55d2b, 
-            flatShading: true 
-        });
-        this.whiteMat = new THREE.MeshLambertMaterial({ 
-            color: 0xffffff, 
-            flatShading: true 
-        });
-        this.purpleMat = new THREE.MeshLambertMaterial({ 
-            color: 0x451954, 
-            flatShading: true 
-        });
-        this.greyMat = new THREE.MeshLambertMaterial({ 
-            color: 0x653f4c, 
-            flatShading: true 
-        });
-        this.blackMat = new THREE.MeshLambertMaterial({ 
-            color: 0x302925, 
-            flatShading: true 
-        });
+        this.yellowMat = new THREE.MeshStandardMaterial({ color: 0xfdd276, roughness: 0.3, metalness: 0.2 });
+        this.redMat = new THREE.MeshStandardMaterial({ color: 0xad3525, roughness: 0.3, metalness: 0.2 });
+        this.pinkMat = new THREE.MeshStandardMaterial({ color: 0xe55d2b, roughness: 0.3, metalness: 0.2 });
+        this.whiteMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2, metalness: 0.3 });
+        this.purpleMat = new THREE.MeshStandardMaterial({ color: 0x451954, roughness: 0.3, metalness: 0.2 });
+        this.greyMat = new THREE.MeshStandardMaterial({ color: 0x653f4c, roughness: 0.3, metalness: 0.2 });
+        this.blackMat = new THREE.MeshStandardMaterial({ color: 0x302925, roughness: 0.4, metalness: 0.1 });
 
         // 创建狮子各部分
         this.createBody();

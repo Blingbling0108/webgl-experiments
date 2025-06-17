@@ -22,7 +22,7 @@ export function initScene() {
         2000 // 远裁剪面
     );
     camera.position.z = 800;
-    camera.position.y = 0;
+    camera.position.y = 100;
     camera.lookAt(0, 0, 0);
     
     // 创建渲染器

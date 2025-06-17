@@ -7,8 +7,10 @@ export function createFloor(scene) {
     const floorGeometry = new THREE.PlaneGeometry(1000, 500);
     
     // 地板材质 - 使用基本材质
-    const floorMaterial = new THREE.MeshBasicMaterial({
-        color: 0xebe5e7, // 浅米色
+    const floorMaterial = new THREE.MeshStandardMaterial({
+        color: 0xffffff, // 更亮的白色
+        roughness: 0.3, // 适度粗糙
+        metalness: 0.2, // 适度金属反光
         side: THREE.DoubleSide // 双面渲染
     });
     

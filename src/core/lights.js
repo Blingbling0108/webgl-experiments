@@ -3,48 +3,33 @@ import * as THREE from 'three';
 
 // 创建基础光照系统
 export function createBasicLights(scene) {
-    // 环境光 - 提供基础照明
-    const ambientLight = new THREE.AmbientLight(
-        0xffffff, // 颜色
-        0.5 // 强度
-    );
-    scene.add(ambientLight);
-    
-    // 主方向光 - 产生阴影和主要照明
-    const mainLight = new THREE.DirectionalLight(
-        0xffffff, // 颜色
-        0.8 // 强度
-    );
-    mainLight.position.set(200, 200, 200);
-    mainLight.castShadow = true;
-    
-    // 优化阴影质量
-    mainLight.shadow.mapSize.width = 1024;
-    mainLight.shadow.mapSize.height = 1024;
-    mainLight.shadow.camera.near = 1;
-    mainLight.shadow.camera.far = 2000;
-    mainLight.shadow.camera.left = -500;
-    mainLight.shadow.camera.right = 500;
-    mainLight.shadow.camera.top = 500;
-    mainLight.shadow.camera.bottom = -500;
-    mainLight.shadow.bias = -0.001; // 减少阴影失真
-    
-    scene.add(mainLight);
-    
-    // 背光 - 提供轮廓光效果
-    const backLight = new THREE.DirectionalLight(
-        0xffffff, // 颜色
-        0.4 // 强度
-    );
-    backLight.position.set(-100, 200, 50);
+    // 半球光
+    const light = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.5);
+    scene.add(light);
+
+    // 主方向光（产生阴影）
+    const shadowLight = new THREE.DirectionalLight(0xffffff, 1.8);
+    shadowLight.position.set(300, 600, 400);
+    shadowLight.castShadow = true;
+    shadowLight.shadow.bias = -0.001;
+    shadowLight.shadow.mapSize.width = 2048;
+    shadowLight.shadow.mapSize.height = 2048;
+    shadowLight.shadow.camera.left = -800;
+    shadowLight.shadow.camera.right = 800;
+    shadowLight.shadow.camera.top = 800;
+    shadowLight.shadow.camera.bottom = -800;
+    shadowLight.shadow.camera.near = 1;
+    shadowLight.shadow.camera.far = 3000;
+    scene.add(shadowLight);
+
+    // 背光
+    const backLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    backLight.position.set(-300, 400, 200);
     backLight.castShadow = true;
+    backLight.shadow.bias = -0.001;
     scene.add(backLight);
-    
-    return {
-        ambientLight,
-        mainLight,
-        backLight
-    };
+
+    return { light, shadowLight, backLight };
 }
 
 // 创建高级光照系统（带物理效果）
