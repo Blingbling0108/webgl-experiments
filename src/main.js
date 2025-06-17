@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 import { initScene, getScene, getCamera, getRenderer, updateWindowSize } from './core/sceneSetup.js';
 import { createFloor } from './core/floor.js';
-import { createBasicLights } from './core/lights.js';
+import { createBasicLights, createPhysicalLights } from './core/lights.js';
 import { createControls } from './core/controls.js';
 import Lion from './objects/Lion.js';
 import Fan from './objects/Fan.js';
@@ -18,7 +18,7 @@ const camera = getCamera();
 const renderer = getRenderer();
 
 // 创建灯光系统
-createBasicLights(scene);
+const lights = createPhysicalLights(scene);
 
 // 创建地板
 createFloor(scene);

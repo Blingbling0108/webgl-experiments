@@ -25,13 +25,28 @@ export default class Fan {
 
     createMaterials() {
         // 红色材质（螺旋桨）
-        this.redMat = new THREE.MeshStandardMaterial({ color: 0xad3525, roughness: 0.3, metalness: 0.2 });
+        this.redMat = new THREE.MeshStandardMaterial({
+            color: 0xad3525,
+            roughness: 0.3,
+            metalness: 0.2,
+            flatShading: true
+        });
         
         // 灰色材质（核心）
-        this.greyMat = new THREE.MeshStandardMaterial({ color: 0x653f4c, roughness: 0.3, metalness: 0.2 });
+        this.greyMat = new THREE.MeshStandardMaterial({
+            color: 0x653f4c,
+            roughness: 0.3,
+            metalness: 0.2,
+            flatShading: true
+        });
         
         // 黄色材质（球体）
-        this.yellowMat = new THREE.MeshStandardMaterial({ color: 0xfdd276, roughness: 0.3, metalness: 0.2 });
+        this.yellowMat = new THREE.MeshStandardMaterial({
+            color: 0xfdd276,
+            roughness: 0.3,
+            metalness: 0.2,
+            flatShading: true
+        });
     }
 
     createCore() {

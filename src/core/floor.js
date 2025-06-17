@@ -6,12 +6,10 @@ export function createFloor(scene) {
     // 地板几何体 - 使用平面几何体
     const floorGeometry = new THREE.PlaneGeometry(1000, 500);
     
-    // 地板材质 - 使用基本材质
-    const floorMaterial = new THREE.MeshStandardMaterial({
-        color: 0xffffff, // 更亮的白色
-        roughness: 0.3, // 适度粗糙
-        metalness: 0.2, // 适度金属反光
-        side: THREE.DoubleSide // 双面渲染
+    // 地板材质 - 使用阴影材质
+    const floorMaterial = new THREE.ShadowMaterial({
+        opacity: 0.4, // 阴影透明度
+        transparent: true // 启用透明
     });
     
     // 创建地板网格
