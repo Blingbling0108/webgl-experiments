@@ -12,6 +12,7 @@ src/
 ├── utils/               # 工具函数
 │   ├── math.js          # 数学工具(rule3, clamp等)
 │   └── helpers.js       # Three.js辅助工具
+│   └── counter.js
 ├── styles/              # 样式文件
 │   └── main.css         # 全局样式
 └── index.html           # 主HTML文件
