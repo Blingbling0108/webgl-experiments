@@ -1,17 +1,17 @@
 // main.js - 应用入口
-import { createScene, createCamera, createRenderer } from './core/sceneSetup.js';
-import { createLights } from './core/lights.js';
+import { initScene, getScene, getCamera, getRenderer } from './core/sceneSetup.js';
 import { createFloor } from './core/floor.js';
+import { createLights } from './core/lights.js';
 import { createControls } from './core/controls.js';
 import Lion from './objects/Lion.js';
 import Fan from './objects/Fan.js';
-import { resizeRendererToDisplaySize } from './utils/helpers.js';
 import '../styles/main.css';
 
-const scene = createScene();
-const camera = createCamera();
-const renderer = createRenderer();
-document.body.appendChild(renderer.domElement);
+// 初始化场景、相机、渲染器
+initScene();
+const scene = getScene();
+const camera = getCamera();
+const renderer = getRenderer();
 
 // 灯光
 const { ambientLight, directionalLight } = createLights();
@@ -19,8 +19,7 @@ scene.add(ambientLight);
 scene.add(directionalLight);
 
 // 地板
-const floor = createFloor();
-scene.add(floor);
+createFloor(scene);
 
 // 狮子
 const lion = new Lion();
@@ -39,7 +38,6 @@ const controls = createControls(camera, renderer);
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
-  resizeRendererToDisplaySize(renderer);
   renderer.render(scene, camera);
 }
 animate();
