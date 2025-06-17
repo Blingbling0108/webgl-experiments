@@ -4,7 +4,7 @@ import { createLights } from './core/lights.js';
 import { createFloor } from './core/floor.js';
 import { createControls } from './core/controls.js';
 import Lion from './objects/Lion.js';
-import { Fan } from './objects/Fan.js';
+import Fan from './objects/Fan.js';
 import { resizeRendererToDisplaySize } from './utils/helpers.js';
 import '../styles/main.css';
 
@@ -29,8 +29,8 @@ scene.add(lion.threegroup);
 
 // 风扇
 const fan = new Fan();
-fan.position.set(2, 0.25, 0);
-scene.add(fan);
+fan.threegroup.position.set(2, 0.25, 0);
+scene.add(fan.threegroup);
 
 // 控制器
 const controls = createControls(camera, renderer);
