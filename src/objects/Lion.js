@@ -287,7 +287,8 @@ export default class Lion {
     }
 
     setupShadows() {
-        this.threegroup.traverse(object => {
+        // 为所有组件启用阴影
+        this.threegroup.traverse((object) => {
             if (object.isMesh) {
                 object.castShadow = true;
                 object.receiveShadow = true;
