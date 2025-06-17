@@ -3,10 +3,10 @@ import { createScene, createCamera, createRenderer } from './core/sceneSetup.js'
 import { createLights } from './core/lights.js';
 import { createFloor } from './core/floor.js';
 import { createControls } from './core/controls.js';
-import { Lion } from './objects/Lion.js';
+import Lion from './objects/Lion.js';
 import { Fan } from './objects/Fan.js';
 import { resizeRendererToDisplaySize } from './utils/helpers.js';
-import './styles/main.css';
+import '../styles/main.css';
 
 const scene = createScene();
 const camera = createCamera();
@@ -24,8 +24,8 @@ scene.add(floor);
 
 // 狮子
 const lion = new Lion();
-lion.position.set(-2, 0.3, 0);
-scene.add(lion);
+lion.threegroup.position.set(-2, 0.3, 0);
+scene.add(lion.threegroup);
 
 // 风扇
 const fan = new Fan();
