@@ -55,20 +55,22 @@ export default class Lion {
 
     createBody() {
         // 身体
-        var bodyGeom = new THREE.CylinderGeometry(30,80, 140, 4);
+        const bodyGeom = new THREE.CylinderGeometry(30, 80, 140, 4);
         this.body = new THREE.Mesh(bodyGeom, this.yellowMat);
-        this.body.position.z = -60;
-        this.body.position.y = -30;
-        this.bodyVertices = [0,1,2,3,4,10];
-
-        // BufferGeometry 顶点操作
-        var position = this.body.geometry.attributes.position;
-        for (var i=0; i<this.bodyVertices.length; i++) {
-            var idx = this.bodyVertices[i];
-            var x = position.getX(idx);
-            var y = position.getY(idx);
+        this.body.position.set(0, -30, -60);
+        
+        // BufferGeometry 兼容写法：保存和修改顶点
+        this.bodyVertices = [0, 1, 2, 3, 4, 10];
+        const position = this.body.geometry.attributes.position;
+        for (let i = 0; i < this.bodyVertices.length; i++) {
+            const idx = this.bodyVertices[i];
+            // 获取原始顶点
+            const x = position.getX(idx);
+            const y = position.getY(idx);
+            // 修改 z 坐标
             position.setZ(idx, 70);
-            this.bodyInitPositions.push({x: x, y: y, z: 70});
+            // 保存初始位置
+            this.bodyInitPositions.push({ x, y, z: 70 });
         }
         position.needsUpdate = true;
         
@@ -339,11 +341,12 @@ export default class Lion {
         this.smile.position.y += (this.tSmilePosY - this.smile.position.y) / speed;
         this.smile.rotation.z += (this.tSmileRotZ - this.smile.rotation.z) / speed;
 
-        // BufferGeometry 顶点动画
-        var position = this.body.geometry.attributes.position;
-        for (var i=0; i<this.bodyVertices.length; i++) {
-            var tvInit = this.bodyInitPositions[i];
-            var idx = this.bodyVertices[i];
+        // 更新身体顶点（跟随头部移动）
+        const position = this.body.geometry.attributes.position;
+        for (let i = 0; i < this.bodyVertices.length; i++) {
+            const tvInit = this.bodyInitPositions[i];
+            const idx = this.bodyVertices[i];
+            // 修改 x 坐标
             position.setX(idx, tvInit.x + this.head.position.x);
         }
         position.needsUpdate = true;
