@@ -27,27 +27,7 @@ export function createFloor(scene) {
     // 添加到场景
     scene.add(floor);
     
-    // 可选：添加网格辅助线
-    addGridHelper(scene);
-    
-    // 可选：添加坐标轴辅助
-    addAxesHelper(scene);
-    
     return floor;
-}
-
-// 添加网格辅助线
-function addGridHelper(scene) {
-    const gridHelper = new THREE.GridHelper(1000, 20, 0xcccccc, 0x888888);
-    gridHelper.position.y = -99; // 略高于地板
-    scene.add(gridHelper);
-}
-
-// 添加坐标轴辅助
-function addAxesHelper(scene) {
-    const axesHelper = new THREE.AxesHelper(200);
-    axesHelper.position.y = -100;
-    scene.add(axesHelper);
 }
 
 // 高级功能：创建带纹理的地板

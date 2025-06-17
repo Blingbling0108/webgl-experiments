@@ -89,46 +89,24 @@ export default class Fan {
         });
     }
 
-    update(xTarget, yTarget, deltaTime, isBlowing) {
-        // 更新吹风状态
-        this.isBlowing = isBlowing;
-        
-        // 使风扇朝向固定点（模拟原始代码中的 lookAt 行为）
+    update(xTarget, yTarget, deltaTime) {
+        // 运动中心和范围参考原始代码
         this.threegroup.lookAt(new THREE.Vector3(0, 80, 60));
-        
-        // 计算目标位置（基于鼠标位置）
         const tPosX = this.rule3(xTarget, -200, 200, -250, 250);
         const tPosY = this.rule3(yTarget, -200, 200, 250, -250);
-        
-        // 平滑移动风扇到目标位置
         this.threegroup.position.x += (tPosX - this.threegroup.position.x) * deltaTime * 4;
         this.threegroup.position.y += (tPosY - this.threegroup.position.y) * deltaTime * 4;
-        
-        // 根据吹风状态更新螺旋桨速度
-        this.updatePropellerSpeed(deltaTime);
-        
-        // 应用螺旋桨旋转
-        this.propeller.rotation.z += this.speed;
-    }
-
-    updatePropellerSpeed(deltaTime) {
-        // 计算目标速度（基于吹风状态）
+        // 风扇转动逻辑
         const targetSpeed = this.isBlowing ? 15 * deltaTime : 5 * deltaTime;
-        
         if (this.isBlowing && this.speed < targetSpeed) {
-            // 吹风状态：加速
             this.acc += 0.01 * deltaTime;
             this.speed += this.acc;
         } else if (!this.isBlowing) {
-            // 非吹风状态：减速
             this.acc = 0;
             this.speed *= Math.pow(0.4, deltaTime);
-            
-            // 确保速度不会变为负值
-            if (this.speed < 0.001) {
-                this.speed = 0;
-            }
+            if (this.speed < 0.001) this.speed = 0;
         }
+        this.propeller.rotation.z += this.speed;
     }
 
     rule3(v, vmin, vmax, tmin, tmax) {

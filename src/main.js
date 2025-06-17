@@ -33,11 +33,11 @@ scene.add(lion.threegroup);
 
 // 创建风扇
 const fan = new Fan();
-fan.threegroup.position.set(2, 0.25, 0);
+fan.threegroup.position.set(0, 0, 350);
 scene.add(fan.threegroup);
 
 // 创建控制器
-const controls = createControls(camera, renderer);
+// const controls = createControls(camera, renderer); // 注释掉控制器
 
 // 创建帧率计数器
 const fpsCounter = new FPSCounter({ 
@@ -88,7 +88,7 @@ document.body.appendChild(credits);
 
 // 状态变量
 let isBlowing = false;
-let mousePos = { x: 0, y: 0 };
+let mousePos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 let fanSpeed = 0;
 let windStrength = 0;
 const clock = new THREE.Clock();
@@ -154,12 +154,12 @@ function animate() {
   deltaTime = clock.getDelta();
   
   // 更新控制器
-  if (controls && controls.update) {
-    controls.update(deltaTime);
-  }
+  // if (controls && controls.update) {
+  //   controls.update(deltaTime);
+  // }
   
   // 更新相机位置
-  updateCameraPosition(deltaTime);
+  // updateCameraPosition(deltaTime);
   
   // 计算鼠标位置相对于屏幕中心
   const windowHalfX = window.innerWidth / 2;
@@ -168,7 +168,8 @@ function animate() {
   const yTarget = mousePos.y - windowHalfY;
   
   // 更新风扇
-  fan.update(xTarget, yTarget, deltaTime, isBlowing);
+  fan.isBlowing = isBlowing;
+  fan.update(xTarget, yTarget, deltaTime);
   
   // 更新狮子
   if (isBlowing) {
@@ -184,6 +185,9 @@ function animate() {
   
   // 更新UI
   updateUI();
+  
+  // 狮子始终正视前方
+  lion.threegroup.rotation.set(0, 0, 0);
   
   // 渲染场景
   renderer.render(scene, camera);
