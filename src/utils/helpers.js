@@ -378,5 +378,5 @@ export function createMeasurementTool(scene, camera) {
         endMeasurement,
         updateMeasurement,
         clearMeasurements
-    };
+    }; 
 }

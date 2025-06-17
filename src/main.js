@@ -1,4 +1,5 @@
 // src/main.js
+import * as THREE from 'three';
 import { initScene, getScene, getCamera, getRenderer, updateWindowSize } from './core/sceneSetup.js';
 import { createFloor } from './core/floor.js';
 import { createBasicLights } from './core/lights.js';
@@ -8,7 +9,7 @@ import Fan from './objects/Fan.js';
 import { rule3, clamp, lerp } from './utils/math.js';
 import { addAxesHelper } from './utils/helpers.js';
 import { FPSCounter } from './utils/counter.js';
-import '../styles/main.css';
+import './styles/main.css';
 
 // 初始化场景、相机、渲染器
 initScene();
