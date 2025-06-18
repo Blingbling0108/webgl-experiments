@@ -36,13 +36,14 @@ fan.threegroup.position.set(0, 0, 350);
 scene.add(fan.threegroup);
 
 // 创建森林
-const forest = new Forest(
-  20, 20, -500, 500, -40, -20,
-  {
-    trunkScale: { min: 0.5, max: 0.8 },
-    foliageScale: { min: 0.6, max: 1.0 }
-  }
-);
+const forest = new Forest({
+  count: 40,
+  areaX: [-600, 600],
+  areaZ: [-600, -200],
+  y: -100,
+  scaleRange: [50, 50] 
+});
+
 scene.add(forest.group);
 // 创建控制器
 // const controls = createControls(camera, renderer); // 注释掉控制器

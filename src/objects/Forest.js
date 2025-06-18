@@ -1,41 +1,25 @@
 // src/objects/Forest.js
 import * as THREE from 'three';
-import Trunc from './Trunc.js';
+import Tree from './Tree.js';
 
 export default class Forest {
-    constructor(count, size, minX, maxX, minZ = 0, maxZ = 0, options = {}) {
-        // 优化默认参数：树干和树枝适度放大，树叶适度缩小
-        const defaultTrunkScale = { min: 0.8, max: 1.1 };
-        const defaultBranchScale = { min: 0.7, max: 1.0 };
-        const defaultFoliageScale = { min: 0.3, max: 0.6 };
-        this.options = {
-            trunkScale: defaultTrunkScale,
-            branchScale: defaultBranchScale,
-            foliageScale: defaultFoliageScale,
-            ...options
-        };
+    constructor({
+        count = 30,
+        areaX = [-200, 200],
+        areaZ = [-400, -200],
+        y = -100,
+        scaleRange = [0.7, 1.2]
+    } = {}) {
         this.group = new THREE.Group();
-        this.count = count;
-        this.size = size;
-        this.minX = minX;
-        this.maxX = maxX;
-        this.minZ = minZ;
-        this.maxZ = maxZ;
-        
-        this.createTrees();
-    }
-    
-    createTrees() {
-        for (let i = 0; i < this.count; i++) {
-            const x = Math.random() * (this.maxX - this.minX) + this.minX;
-            const z = Math.random() * this.size - this.size / 2;
-            
-            const complex = Math.random() > 0.5; // 50% 概率生成复杂树木
-            const tree = new Trunc(complex);
-            
-            tree.mesh.position.set(x, 0, z);
-            
-            this.group.add(tree.mesh);
+        for (let i = 0; i < count; i++) {
+            const x = Math.random() * (areaX[1] - areaX[0]) + areaX[0];
+            const z = Math.random() * (areaZ[1] - areaZ[0]) + areaZ[0];
+            const scale = scaleRange[0] + Math.random() * (scaleRange[1] - scaleRange[0]);
+            const tree = new Tree({
+                position: new THREE.Vector3(x, y, z),
+                scale
+            });
+            this.group.add(tree.group);
         }
     }
 }
