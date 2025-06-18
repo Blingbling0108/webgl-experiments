@@ -68,7 +68,7 @@ export default class Tree {
     const ground = new THREE.Mesh(geometry, leaveDarkDarkMaterial);
     ground.position.set(0, -1, 0);
     ground.scale.set(
-      2.0 + Math.random() * 0.7,
+      4.0 + Math.random() * 0.7,
       0.7 + Math.random() * 0.2,
       2.0 + Math.random() * 0.7
     );

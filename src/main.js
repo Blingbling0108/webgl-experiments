@@ -26,7 +26,7 @@ createFloor(scene);
 
 // 创建狮子
 const lion = new Lion();
-lion.threegroup.position.set(0, 0.3, 0);
+lion.threegroup.position.set(0, -10, 0);
 
 scene.add(lion.threegroup);
 
@@ -37,63 +37,16 @@ scene.add(fan.threegroup);
 
 // 创建森林
 const forest = new Forest({
-  count: 40,
-  areaX: [-600, 600],
-  areaZ: [-600, -200],
-  y: -100,
-  scaleRange: [50, 50] 
+  count: 80,
+  areaX: [-1500, 1500],
+  areaZ: [-50, -2000],
+  y: -50,
+  scaleRange: [50, 300] 
 });
 
 scene.add(forest.group);
 // 创建控制器
 // const controls = createControls(camera, renderer); // 注释掉控制器
-
-// 创建帧率计数器
-const fpsCounter = new FPSCounter({ 
-  position: 'top-right',
-  showGraph: true,
-  graphColor: '#ff6b6b'
-});
-
-// 添加说明文本
-const instructions = document.createElement('div');
-instructions.id = 'instructions';
-instructions.innerHTML = `
-  <div class="instruction-content">
-    <h1>3D 交互狮子</h1>
-    <p>点击并拖动鼠标使风扇吹风</p>
-    <p>狮子会对风作出反应</p>
-    <div class="keyboard-controls">
-      <div class="key"><kbd>W</kbd> <span>前进</span></div>
-      <div class="key"><kbd>S</kbd> <span>后退</span></div>
-      <div class="key"><kbd>A</kbd> <span>左移</span></div>
-      <div class="key"><kbd>D</kbd> <span>右移</span></div>
-      <div class="key"><kbd>Q</kbd> <span>上移</span></div>
-      <div class="key"><kbd>E</kbd> <span>下移</span></div>
-      <div class="key"><kbd>R</kbd> <span>重置场景</span></div>
-    </div>
-    <div class="stats">
-      <div class="stat">
-        <span class="label">风扇速度:</span>
-        <span id="fan-speed" class="value">0</span>
-      </div>
-      <div class="stat">
-        <span class="label">风力强度:</span>
-        <span id="wind-strength" class="value">0</span>
-      </div>
-    </div>
-  </div>
-`;
-document.body.appendChild(instructions);
-
-// 添加版权信息
-const credits = document.createElement('div');
-credits.id = 'credits';
-credits.innerHTML = `
-  <p>Three.js 交互演示 | 基于 <a href="https://codepen.io/Yakudoo/pen/YXxmYR" target="_blank">Lion by Yakudoo</a></p>
-  <p>使用 Three.js r136 构建</p>
-`;
-document.body.appendChild(credits);
 
 // 状态变量
 let isBlowing = false;
@@ -149,12 +102,6 @@ function updateCameraPosition(deltaTime) {
   camera.lookAt(0, 0, 0);
 }
 
-// 更新UI显示
-function updateUI() {
-  document.getElementById('fan-speed').textContent = fanSpeed.toFixed(2);
-  document.getElementById('wind-strength').textContent = windStrength.toFixed(2);
-}
-
 // 渲染循环
 function animate() {
   requestAnimationFrame(animate);
@@ -191,9 +138,6 @@ function animate() {
   
   // 更新风扇速度显示
   fanSpeed = fan.speed;
-  
-  // 更新UI
-  updateUI();
   
   // 狮子始终正视前方
   lion.threegroup.rotation.set(0, 0, 0);
