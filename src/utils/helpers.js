@@ -373,6 +373,50 @@ export function createMeasurementTool(scene, camera) {
         startPoint = null;
     }
     
+     // 获取几何体上的附着点
+  getAttachs(geometry, definitions) {
+    const attachs = [];
+    const vertices = geometry.vertices;
+    
+    definitions.forEach(def => {
+      for (let i = 0; i < def.count; i++) {
+        const randomIndex = Math.floor(Math.random() * vertices.length);
+        attachs.push({
+          index: randomIndex,
+          type: def.type,
+          mesh: null
+        });
+      }
+    });
+    
+    return attachs;
+  },
+  
+  // 为几何体添加噪声
+  makeNoise(geometry, intensity) {
+    const vertices = geometry.vertices;
+    
+    for (let i = 0; i < vertices.length; i++) {
+      const v = vertices[i];
+      v.x += (Math.random() - 0.5) * intensity;
+      v.y += (Math.random() - 0.5) * intensity;
+      v.z += (Math.random() - 0.5) * intensity;
+    }
+    
+    geometry.verticesNeedUpdate = true;
+  },
+  
+  // 获取顶点法线
+  getVerticesNormals(geometry) {
+    const normals = [];
+    geometry.computeVertexNormals();
+    
+    for (let i = 0; i < geometry.vertices.length; i++) {
+      normals.push(geometry.vertices[i].clone().normalize());
+    }
+    
+    return normals;
+  }
     return {
         startMeasurement,
         endMeasurement,

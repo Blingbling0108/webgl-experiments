@@ -258,3 +258,31 @@ export function linearToGamma(value) {
 export function gammaToLinear(value) {
     return Math.pow(value, 2.2);
 }
+
+/**
+ * 生成指定范围内的随机数
+ * @param {number} min - 最小值
+ * @param {number} max - 最大值
+ * @returns {number} 随机数
+ */
+export function rangeRandom(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+/**
+ * 生成指定范围内的随机整数
+ * @param {number} min - 最小值
+ * @param {number} max - 最大值
+ * @returns {number} 随机整数
+ */
+export function rangeRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+/**
+ * 生成随机布尔值
+ * @returns {boolean} 随机布尔值
+ */
+export function randomBool() {
+  return Math.random() > 0.5;
+}
