@@ -9,6 +9,14 @@ export default class Lion {
         this.mustaches = [];
         this.threegroup = new THREE.Group();
         
+        // 跳跃和重力相关属性
+        this.velocity = 0; // 垂直速度
+        this.isJumping = false; // 是否正在跳跃
+        this.gravity = -800; // 重力加速度
+        this.jumpForce = 400; // 跳跃力度
+        this.groundY = -10; // 地面高度
+        this.initialY = -10; // 初始Y位置
+        
         // 材质定义
         this.yellowMat = new THREE.MeshStandardMaterial({ 
             color: 0xfdd276,
@@ -474,5 +482,59 @@ export default class Lion {
         const pc = (nv - vmin) / dv;
         const dt = tmax - tmin;
         return tmin + pc * dt;
+    }
+
+    // 跳跃方法
+    jump() {
+        if (!this.isJumping) {
+            this.velocity = this.jumpForce;
+            this.isJumping = true;
+            this.jumpPhase = 'up'; // 新增：标记起跳阶段
+        }
+    }
+
+    // 更新跳跃和重力
+    updateJump(deltaTime) {
+        if (this.isJumping) {
+            // 应用重力
+            this.velocity += this.gravity * deltaTime;
+            
+            // 更新位置
+            const newY = this.threegroup.position.y + this.velocity * deltaTime;
+
+            // --- 动画：头和脚的挑起 ---
+            if (this.velocity > 0) { // 起跳阶段
+                // 头部快速上仰，前脚收起，后脚伸展
+                this.tHeadRotX = -Math.PI / 8;
+                this.tHeadPosY = 60;
+                this.tLeftKneeRotZ = -0.7;
+                this.tRightKneeRotZ = 0.7;
+            } else { // 下落阶段
+                // 头部缓慢下压，四肢缓慢恢复
+                this.tHeadRotX = Math.PI / 12;
+                this.tHeadPosY = 40;
+                this.tLeftKneeRotZ = -0.3;
+                this.tRightKneeRotZ = 0.3;
+            }
+            // 动画速度：起跳快，落地慢
+            const animSpeed = this.velocity > 0 ? 4 : 12;
+            this.updateBody(animSpeed);
+            // --- 动画结束 ---
+
+            // 检查是否落地
+            if (newY <= this.groundY) {
+                this.threegroup.position.y = this.groundY;
+                this.velocity = 0;
+                this.isJumping = false;
+                // 落地后缓慢恢复站立
+                this.tHeadRotX = 0;
+                this.tHeadPosY = 0;
+                this.tLeftKneeRotZ = -0.3;
+                this.tRightKneeRotZ = 0.3;
+                this.updateBody(16); // 恢复速度更慢
+            } else {
+                this.threegroup.position.y = newY;
+            }
+        }
     }
 }

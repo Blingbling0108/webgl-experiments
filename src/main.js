@@ -37,11 +37,11 @@ scene.add(fan.threegroup);
 
 // 创建森林
 const forest = new Forest({
-  count: 80,
-  areaX: [-1500, 1500],
-  areaZ: [-50, -2000],
-  y: -50,
-  scaleRange: [50, 300] 
+  count: 2,
+  areaX: [-250, -100],
+  areaZ: [0, -100],
+  y: 0,
+  scaleRange: [50, 100] 
 });
 
 scene.add(forest.group);
@@ -69,6 +69,12 @@ document.addEventListener('keydown', (event) => {
   if (event.key === 'r' || event.key === 'R') {
     camera.position.set(0, 0, 800);
     camera.lookAt(0, 50, 0);
+  }
+  
+  // 狮子跳跃
+  if (event.code === 'Space') {
+    event.preventDefault(); // 防止页面滚动
+    lion.jump();
   }
 });
 
@@ -127,6 +133,9 @@ function animate() {
   fan.isBlowing = isBlowing;
   fan.update(xTarget, yTarget, deltaTime);
   
+  // 更新森林动画
+  forest.update(deltaTime, windStrength);
+  
   // 更新狮子
   if (isBlowing) {
     lion.cool(xTarget, yTarget, deltaTime);
@@ -135,6 +144,9 @@ function animate() {
     lion.look(xTarget, yTarget);
     windStrength = lerp(windStrength, 0.0, deltaTime * 5);
   }
+  
+  // 更新狮子跳跃
+  lion.updateJump(deltaTime);
   
   // 更新风扇速度显示
   fanSpeed = fan.speed;
