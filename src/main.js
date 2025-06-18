@@ -26,7 +26,8 @@ createFloor(scene);
 
 // 创建狮子
 const lion = new Lion();
-lion.threegroup.position.set(-2, 0.3, 0);
+lion.threegroup.position.set(0, 0.3, 0);
+
 scene.add(lion.threegroup);
 
 // 创建风扇
@@ -35,7 +36,7 @@ fan.threegroup.position.set(0, 0, 350);
 scene.add(fan.threegroup);
 
 // 创建森林
-const forest = new Forest(40, 8, -400, 400, -800, -300);
+const forest = new Forest(1, 8, -4, 4, -5, -3);
 scene.add(forest.group);
 
 // 创建控制器
