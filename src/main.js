@@ -7,6 +7,7 @@ import { createControls } from './core/controls.js';
 import Lion from './objects/Lion.js';
 import Fan from './objects/Fan.js';
 import Forest from './objects/Forest.js';
+import Island from './objects/Island.js';
 import { rule3, clamp, lerp } from './utils/math.js';
 import { addAxesHelper } from './utils/helpers.js';
 import { FPSCounter } from './utils/counter.js';
@@ -38,13 +39,18 @@ scene.add(fan.threegroup);
 // 创建森林
 const forest = new Forest({
   count: 2,
-  areaX: [-250, -100],
-  areaZ: [0, -100],
+  areaX: [-200, -100],
+  areaZ: [10, -30],
   y: 0,
-  scaleRange: [50, 100] 
+  scaleRange: [30, 100] 
 });
 
 scene.add(forest.group);
+
+// 创建岛屿
+const island = new Island({ position: new THREE.Vector3(0, -200, -300), scale: 1 });
+scene.add(island.group);
+
 // 创建控制器
 // const controls = createControls(camera, renderer); // 注释掉控制器
 
