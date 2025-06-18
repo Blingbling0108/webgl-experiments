@@ -1,71 +1,84 @@
 // src/objects/Foliage.js
 import * as THREE from 'three';
 import Colors from '../utils/colors.js';
-import Math2 from '../utils/Math2.js';
-import GeometryHelpers from '../utils/GeometryHelpers.js';
-import CustomMesh from '../utils/CustomMesh.js';
+import { rangeRandom, rangeRandomInt } from '../utils/math.js';
 
 export default class Foliage {
-  constructor(scale, color, complex = false) {
-    this.type = "foliage";
-    this.scale = scale;
-    this.color = color;
+  constructor(size, color = null) {
+    this.size = size;
     
-    // 创建树叶基本形状
-    const widthSegments = complex ? Math2.rangeRandomInt(3, 10) : Math2.rangeRandomInt(3, 5);
-    const heightSegments = Math2.rangeRandomInt(3, 6);
-    const noise = complex ? 0.05 * scale : Math2.rangeRandom(scale/20, scale/5);
+    // 创建树叶球体
+    const foliageColor = color || Colors.getRandomFrom(Colors.pinks);
+    const geometry = new THREE.SphereGeometry(
+      this.size, 
+      rangeRandomInt(6, 10), // 宽度分段
+      rangeRandomInt(6, 10)  // 高度分段
+    );
     
-    this.mesh = new CustomMesh.SphereMesh(scale, widthSegments, heightSegments, this.color, false);
+    const material = new THREE.MeshStandardMaterial({
+      color: foliageColor,
+      roughness: 0.8,
+      metalness: 0.1,
+      flatShading: true
+    });
     
-    // 添加细节
-    if (complex) {
-      this.addDetail();
-    }
+    this.mesh = new THREE.Mesh(geometry, material);
     
     // 添加噪声使树叶更自然
-    GeometryHelpers.makeNoise(this.mesh.geometry, noise);
-  }
-  
-  addDetail() {
-    const geom = this.mesh.geometry;
-    const h = this.scale * 2;
+    this.addNoise(this.mesh.geometry, this.size * 0.1);
     
     // 添加子树叶
-    const defAttachs = [
-      { type: "subFol", count: 6, minH: h * 0.2, maxH: h * 0.9 }
-    ];
-    
-    const attachsVerts = GeometryHelpers.getAttachs(geom, defAttachs);
-    
-    for (let i = 0; i < attachsVerts.length; i++) {
-      const attDef = attachsVerts[i];
-      const v = geom.vertices[attDef.index];
-      const s = Math2.rangeRandom(this.scale * 0.05, this.scale * 0.2);
-      
-      // 创建子树叶
-      const subFoliage = new SubFoliage(s);
-      subFoliage.mesh.position.copy(v);
-      subFoliage.mesh.rotation.z = Math2.rangeRandom(-Math.PI/8, Math.PI/8);
-      subFoliage.mesh.rotation.x = Math2.rangeRandom(-Math.PI/8, Math.PI/8);
-      
-      this.mesh.add(subFoliage.mesh);
-    }
+    this.addSubFoliage();
   }
-}
-
-// 子树叶类
-class SubFoliage {
-  constructor(scale) {
-    this.type = "subfoliage";
-    const widthSegments = Math2.rangeRandomInt(2, 4);
-    const heightSegments = Math2.rangeRandomInt(2, 4);
-    this.mesh = new CustomMesh.SphereMesh(
-      scale, 
-      widthSegments, 
-      heightSegments, 
-      Colors.getRandomFrom(Colors.leaves), 
-      true
-    );
+  
+  addNoise(geometry, intensity) {
+    const position = geometry.attributes.position;
+    const vertices = [];
+    
+    for (let i = 0; i < position.count; i++) {
+      const x = position.getX(i);
+      const y = position.getY(i);
+      const z = position.getZ(i);
+      
+      vertices.push(
+        x + (Math.random() - 0.5) * intensity,
+        y + (Math.random() - 0.5) * intensity,
+        z + (Math.random() - 0.5) * intensity
+      );
+    }
+    
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+    geometry.computeVertexNormals();
+  }
+  
+  addSubFoliage() {
+    // 在树叶球体上添加小叶子
+    const subCount = rangeRandomInt(3, 6);
+    for (let i = 0; i < subCount; i++) {
+      const subSize = this.size * (0.3 + Math.random() * 0.2);
+      const subGeometry = new THREE.SphereGeometry(
+        subSize,
+        rangeRandomInt(4, 6),
+        rangeRandomInt(4, 6)
+      );
+      
+      const subMaterial = new THREE.MeshStandardMaterial({
+        color: Colors.getRandomFrom(Colors.pinks),
+        roughness: 0.8,
+        metalness: 0.1,
+        flatShading: true
+      });
+      
+      const subFoliage = new THREE.Mesh(subGeometry, subMaterial);
+      
+      // 在球体表面随机分布
+      const angle = Math.random() * Math.PI * 2;
+      const distance = this.size * (0.7 + Math.random() * 0.3);
+      subFoliage.position.x = Math.cos(angle) * distance;
+      subFoliage.position.z = Math.sin(angle) * distance;
+      subFoliage.position.y = rangeRandom(-this.size, this.size);
+      
+      this.mesh.add(subFoliage);
+    }
   }
 }

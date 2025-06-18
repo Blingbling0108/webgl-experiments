@@ -6,6 +6,7 @@ import { createBasicLights, createPhysicalLights } from './core/lights.js';
 import { createControls } from './core/controls.js';
 import Lion from './objects/Lion.js';
 import Fan from './objects/Fan.js';
+import Forest from './objects/Forest.js';
 import { rule3, clamp, lerp } from './utils/math.js';
 import { addAxesHelper } from './utils/helpers.js';
 import { FPSCounter } from './utils/counter.js';
@@ -32,6 +33,10 @@ scene.add(lion.threegroup);
 const fan = new Fan();
 fan.threegroup.position.set(0, 0, 350);
 scene.add(fan.threegroup);
+
+// 创建森林
+const forest = new Forest(40, 8, -400, 400, -800, -300);
+scene.add(forest.group);
 
 // 创建控制器
 // const controls = createControls(camera, renderer); // 注释掉控制器
