@@ -41,10 +41,10 @@ scene.add(fan.threegroup);
 // 创建森林
 const forest = new Forest({
   count: 2,
-  areaX: [-200, -100],
-  areaZ: [10, -30],
-  y: 0,
-  scaleRange: [30, 100] 
+  areaX: [-350, -100],
+  areaZ: [-100, -200],
+  y: -80,
+  scaleRange: [50, 150] 
 });
 
 scene.add(forest.group);
@@ -83,8 +83,8 @@ document.addEventListener('keydown', (event) => {
   
   // 重置场景
   if (event.key === 'r' || event.key === 'R') {
-    camera.position.set(0, 0, 800);
-    camera.lookAt(0, 50, 0);
+    camera.position.set(0, -100, 800);
+    camera.lookAt(0, 0, 0);
   }
   
   // 狮子跳跃
@@ -173,6 +173,29 @@ const windAudio = new Audio('/wind.ogg');
 windAudio.loop = true;
 windAudio.volume = 0.7;
 
+// 摄像机动画参数
+let cameraAnim = {
+  running: true,
+  fromZ: 2000,
+  toZ: camera.position.z,
+  duration: 1.8, // 秒
+  startTime: null
+};
+camera.position.z = cameraAnim.fromZ;
+
+window.addEventListener('DOMContentLoaded', () => {
+  const overlay = document.getElementById('start-overlay');
+  const startBtn = document.getElementById('start-btn');
+  startBtn.addEventListener('click', () => {
+    overlay.classList.add('rip');
+    setTimeout(() => {
+      overlay.style.display = 'none';
+      cameraAnim.running = true;
+      cameraAnim.startTime = null;
+    }, 1000); // 动画时长
+  });
+});
+
 // 渲染循环
 function animate() {
   requestAnimationFrame(animate);
@@ -245,6 +268,14 @@ function animate() {
 
   // 更新云朵动画
   cloud.update(deltaTime);
+
+  // 摄像机入场动画
+  if (cameraAnim.running) {
+    if (!cameraAnim.startTime) cameraAnim.startTime = performance.now();
+    const t = Math.min((performance.now() - cameraAnim.startTime) / (cameraAnim.duration * 1000), 1);
+    camera.position.z = cameraAnim.fromZ + (cameraAnim.toZ - cameraAnim.fromZ) * t;
+    if (t >= 1) cameraAnim.running = false;
+  }
 
   // 渲染场景
   renderer.render(scene, camera);

@@ -93,6 +93,17 @@ export default class Bird {
     this.group.scale.set(1 / 3, 1 / 3, 1 / 3);
     this.group.position.x = 200;
     this.group.position.y = -110;
+
+    this.chickenAudio = new Audio('/chicken.ogg');
+    this.chickenAudio.volume = 0.7;
+  }
+
+  playChickenSound() {
+    // 避免多次重叠播放
+    if (!this.chickenAudio.paused) {
+      this.chickenAudio.currentTime = 0;
+    }
+    this.chickenAudio.play();
   }
 
   look(h, v) {
@@ -159,6 +170,7 @@ export default class Bird {
     this.animateColor(this.shySkin, speed);
     this.shyAngles.h = shyH;
     this.shyAngles.v = shyV;
+    this.playChickenSound();
   }
 
   stare() {
@@ -167,6 +179,7 @@ export default class Bird {
     this.animateColor(this.normalSkin, 2);
     this.shyAngles.h = 0;
     this.shyAngles.v = 0;
+    this.playChickenSound();
   }
 
   animateColor(target, speed) {

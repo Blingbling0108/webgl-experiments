@@ -25,6 +25,8 @@ export default class Tree {
       1.2 + Math.random() * 0.7,
       0.25 + Math.random() * 0.15
     );
+    stem.castShadow = true;
+    stem.receiveShadow = true;
 
     // 创建更多树叶块
     const leaves = [];
@@ -86,6 +88,8 @@ export default class Tree {
         pos.scale[1] + Math.random() * 0.2,
         pos.scale[2] + Math.random() * 0.2
       );
+      leaf.castShadow = true;
+      leaf.receiveShadow = true;
       leaves.push(leaf);
     });
 
