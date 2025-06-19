@@ -12,6 +12,7 @@ import { rule3, clamp, lerp } from './utils/math.js';
 import { addAxesHelper } from './utils/helpers.js';
 import { FPSCounter } from './utils/counter.js';
 import './styles/main.css';
+import { createStaticBird } from './objects/Bird.js';
 
 // 初始化场景、相机、渲染器
 initScene();
@@ -50,6 +51,9 @@ scene.add(forest.group);
 // 创建岛屿
 const island = new Island({ position: new THREE.Vector3(0, -200, -300), scale: 1 });
 scene.add(island.group);
+
+// 创建小鸡
+createStaticBird(scene);
 
 // 创建控制器
 // const controls = createControls(camera, renderer); // 注释掉控制器

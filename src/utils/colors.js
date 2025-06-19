@@ -13,6 +13,10 @@ const Colors = {
     purple_d: 0x8E44AD,
     yellow_l: 0xFFD700,
     yellow_d: 0xF1C40F,
+    birdYellow: 0xffde79, // 小鸡黄色
+    birdWhite: 0xffffff, // 小鸡白色
+    birdBlack: 0x000000, // 小鸡黑色
+    birdOrange: 0xff5535, // 小鸡橙色
     
     // 颜色组
     trunc: [0xF0F0F0, 0xE0E0E0, 0x888888, 0x444444],
