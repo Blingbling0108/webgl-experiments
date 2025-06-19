@@ -12,7 +12,7 @@ import { rule3, clamp, lerp } from './utils/math.js';
 import { addAxesHelper } from './utils/helpers.js';
 import { FPSCounter } from './utils/counter.js';
 import './styles/main.css';
-import { createStaticBird } from './objects/Bird.js';
+import Bird from './objects/Bird.js';
 
 // 初始化场景、相机、渲染器
 initScene();
@@ -28,7 +28,7 @@ createFloor(scene);
 
 // 创建狮子
 const lion = new Lion();
-lion.threegroup.position.set(0, -10, 0);
+lion.threegroup.position.set(0, -20, 0);
 
 scene.add(lion.threegroup);
 
@@ -52,8 +52,9 @@ scene.add(forest.group);
 const island = new Island({ position: new THREE.Vector3(0, -200, -300), scale: 1 });
 scene.add(island.group);
 
-// 创建小鸡
-createStaticBird(scene);
+// 创建右侧小鸡
+const bird2 = new Bird();
+scene.add(bird2.group);
 
 // 创建控制器
 // const controls = createControls(camera, renderer); // 注释掉控制器
@@ -163,7 +164,29 @@ function animate() {
   
   // 狮子始终正视前方
   lion.threegroup.rotation.set(0, 0, 0);
-  
+
+  // 计算狮子视线角度
+  const tempHA = (mousePos.x - windowHalfX) / 200;
+  const tempVA = (mousePos.y - windowHalfY) / 200;
+  const lionHAngle = Math.min(Math.max(tempHA, -Math.PI/3), Math.PI/3);
+  const lionVAngle = Math.min(Math.max(tempVA, -Math.PI/3), Math.PI/3);
+
+  // 小鸡害羞逻辑
+  if (lionHAngle < -Math.PI/5 && !bird2.intervalRunning) {
+    bird2.lookAway(true);
+    bird2.intervalRunning = true;
+    bird2.behaviourInterval = setInterval(() => {
+      bird2.lookAway(false);
+    }, 1500);
+  } else if (lionHAngle >= -Math.PI/5 && bird2.intervalRunning) {
+    bird2.stare();
+    clearInterval(bird2.behaviourInterval);
+    bird2.intervalRunning = false;
+  }
+  // 小鸡动画更新
+  bird2.look(bird2.shyAngles.h, bird2.shyAngles.v);
+  bird2.bodyBird.material.color.setRGB(bird2.color.r, bird2.color.g, bird2.color.b);
+
   // 渲染场景
   renderer.render(scene, camera);
 }
@@ -174,9 +197,6 @@ animate();
 // 窗口大小变化处理
 window.addEventListener('resize', () => {
   updateWindowSize();
-  
-  // 更新说明位置
-  instructions.style.top = `${window.innerHeight - instructions.offsetHeight - 20}px`;
 });
 
 // 鼠标控制风扇交互
