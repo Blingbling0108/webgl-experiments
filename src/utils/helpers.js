@@ -1,5 +1,6 @@
 // src/utils/Helpers.js
 import * as THREE from 'three';
+import { Colors } from './colors';
 
 /**
  * 添加坐标轴辅助器
@@ -428,3 +429,12 @@ export const GeometryHelpers = {
         return normals;
     }
 };
+
+export function getMat(color) {
+  return new THREE.MeshStandardMaterial({
+    color: color,
+    roughness: 0.9,
+    emissive: Colors.red,
+    flatShading: true,
+  });
+}

@@ -22,7 +22,7 @@ export function createFloor(scene) {
     floor.position.y = -100;
     
     // 启用阴影
-    floor.receiveShadow = true;
+    floor.receiveShadow = false;
     
     // 添加到场景
     scene.add(floor);
@@ -56,7 +56,7 @@ export function createTexturedFloor(scene, texturePath) {
             const floor = new THREE.Mesh(floorGeometry, floorMaterial);
             floor.rotation.x = -Math.PI / 2;
             floor.position.y = -100;
-            floor.receiveShadow = true;
+            floor.receiveShadow = false;
             
             // 添加物理材质特性
             addPhysicsProperties(floor);

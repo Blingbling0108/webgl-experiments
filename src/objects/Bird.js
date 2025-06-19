@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Colors from '../utils/colors.js';
+import { Colors } from '../utils/colors.js';
 
 export default class Bird {
   constructor() {
@@ -112,13 +112,29 @@ export default class Bird {
       tv.z = -tvInitPos.x * Math.sin(a) + tvInitPos.z * Math.cos(a);
     }
     this.bodyBird.geometry.verticesNeedUpdate = true;
-    // 眼睛虹膜随头部转动
-    this.leftIris.position.y = 120 - this.vAngle * 30;
-    this.leftIris.position.x = -30 + this.hAngle * 18;
-    this.leftIris.position.z = 40 + this.hAngle * 18;
-    this.rightIris.position.y = 120 - this.vAngle * 30;
-    this.rightIris.position.x = 30 + this.hAngle * 18;
-    this.rightIris.position.z = 40 - this.hAngle * 18;
+    // 眼睛虹膜缓动
+    if (!this.irisTarget) this.irisTarget = {lx: this.leftIris.position.x, ly: this.leftIris.position.y, lz: this.leftIris.position.z, rx: this.rightIris.position.x, ry: this.rightIris.position.y, rz: this.rightIris.position.z};
+    // 目标位置
+    const lTarget = {
+      x: -30 + this.hAngle * 18,
+      y: 120 - this.vAngle * 30,
+      z: 40 + this.hAngle * 18
+    };
+    const rTarget = {
+      x: 30 + this.hAngle * 18,
+      y: 120 - this.vAngle * 30,
+      z: 40 - this.hAngle * 18
+    };
+    // 缓动插值
+    this.irisTarget.lx += (lTarget.x - this.irisTarget.lx) * 0.18;
+    this.irisTarget.ly += (lTarget.y - this.irisTarget.ly) * 0.18;
+    this.irisTarget.lz += (lTarget.z - this.irisTarget.lz) * 0.18;
+    this.irisTarget.rx += (rTarget.x - this.irisTarget.rx) * 0.18;
+    this.irisTarget.ry += (rTarget.y - this.irisTarget.ry) * 0.18;
+    this.irisTarget.rz += (rTarget.z - this.irisTarget.rz) * 0.18;
+    this.leftIris.position.set(this.irisTarget.lx, this.irisTarget.ly, this.irisTarget.lz);
+    this.rightIris.position.set(this.irisTarget.rx, this.irisTarget.ry, this.irisTarget.rz);
+    // 其他部件联动
     this.leftEye.position.y = this.rightEye.position.y = 120 - this.vAngle * 10;
     this.beak.position.y = 70 - this.vAngle * 20;
     this.beak.rotation.x = Math.PI / 2 + this.vAngle / 3;

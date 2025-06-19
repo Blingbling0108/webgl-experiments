@@ -13,6 +13,7 @@ import { addAxesHelper } from './utils/helpers.js';
 import { FPSCounter } from './utils/counter.js';
 import './styles/main.css';
 import Bird from './objects/Bird.js';
+import Cloud from './objects/Cloud.js';
 
 // 初始化场景、相机、渲染器
 initScene();
@@ -55,6 +56,10 @@ scene.add(island.group);
 // 创建右侧小鸡
 const bird2 = new Bird();
 scene.add(bird2.group);
+
+// 创建云朵并放在狮子右上方
+const cloud = new Cloud({ position: new THREE.Vector3(180, 180, 150), scale: 4 });
+scene.add(cloud.group);
 
 // 创建控制器
 // const controls = createControls(camera, renderer); // 注释掉控制器
@@ -118,6 +123,55 @@ function updateCameraPosition(deltaTime) {
   
   camera.lookAt(0, 0, 0);
 }
+
+// Saturn土星环参数
+const parameters = {
+  minRadius : 35,
+  maxRadius : 65,
+  minSpeed:.02,
+  maxSpeed:.03,
+  particles:400,
+  minSize:.5,
+  maxSize:1.8,
+};
+
+class Saturn {
+  constructor() {
+    const geomPlanet = new THREE.TetrahedronGeometry(20,2);
+    const noise = 5;
+    // 兼容BufferGeometry顶点扰动
+    const position = geomPlanet.attributes.position;
+    for (let i = 0; i < position.count; i++) {
+      position.setX(i, position.getX(i) + (-noise/2 + Math.random()*noise));
+      position.setY(i, position.getY(i) + (-noise/2 + Math.random()*noise));
+      position.setZ(i, position.getZ(i) + (-noise/2 + Math.random()*noise));
+    }
+    position.needsUpdate = true;
+    const matPlanet = new THREE.MeshStandardMaterial({ color: 0xee5624, roughness: 0.9, emissive: 0x270000, flatShading: true });
+    this.planet = new THREE.Mesh(geomPlanet, matPlanet);
+    this.planet.castShadow = true;
+    this.planet.receiveShadow = true;
+  }
+}
+
+// 创建土星环并加入场景
+const saturn = new Saturn();
+saturn.planet.position.set(0, 80, -100);
+
+// 添加背景音乐
+const bgm = new Audio('/calm2.ogg');
+bgm.loop = true;
+bgm.volume = 0.5;
+window.addEventListener('click', () => {
+  if (bgm.paused) bgm.play();
+});
+// 自动尝试播放（部分浏览器需用户交互后才允许）
+bgm.play().catch(() => {});
+
+// 添加风声音效
+const windAudio = new Audio('/wind.ogg');
+windAudio.loop = true;
+windAudio.volume = 0.7;
 
 // 渲染循环
 function animate() {
@@ -187,6 +241,11 @@ function animate() {
   bird2.look(bird2.shyAngles.h, bird2.shyAngles.v);
   bird2.bodyBird.material.color.setRGB(bird2.color.r, bird2.color.g, bird2.color.b);
 
+  saturn.planet.rotation.y -= .01;
+
+  // 更新云朵动画
+  cloud.update(deltaTime);
+
   // 渲染场景
   renderer.render(scene, camera);
 }
@@ -206,7 +265,10 @@ window.addEventListener('mousemove', (e) => {
 });
 window.addEventListener('mousedown', () => {
   isBlowing = true;
+  if (windAudio.paused) windAudio.play();
 });
 window.addEventListener('mouseup', () => {
   isBlowing = false;
+  windAudio.pause();
+  windAudio.currentTime = 0;
 });

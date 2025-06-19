@@ -1,6 +1,6 @@
 // src/objects/Tree.js
 import * as THREE from 'three';
-import Colors from '../utils/colors.js';
+import { Colors } from '../utils/colors.js';
 
 export default class Tree {
   constructor({ position = new THREE.Vector3(0, 0, 0), scale = 1 } = {}) {

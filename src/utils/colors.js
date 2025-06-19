@@ -1,5 +1,5 @@
 // src/utils/Colors.js
-const Colors = {
+export const Colors = {
     // 基本颜色
     white_l: 0xF0F0F0,
     white_d: 0xE0E0E0,
@@ -13,7 +13,7 @@ const Colors = {
     purple_d: 0x8E44AD,
     yellow_l: 0xFFD700,
     yellow_d: 0xF1C40F,
-    birdYellow: 0xffde79, // 小鸡黄色
+    birdYellow: 0xffc800, // 小鸡黄色（更高饱和度）
     birdWhite: 0xffffff, // 小鸡白色
     birdBlack: 0x000000, // 小鸡黑色
     birdOrange: 0xff5535, // 小鸡橙色
@@ -44,7 +44,19 @@ const Colors = {
     // 随机获取颜色
     getRandomFrom(palette) {
       return palette[Math.floor(Math.random() * palette.length)];
-    }
-  };
-  
-  export default Colors;
+    },
+
+    green: 0x8fc999,
+    blue: 0x5fc4d0,
+    orange: 0xee5624,
+    yellow: 0xfaff70,
+    red: 0x270000,
+    brown: 0x663344,
+    white: 0xffffff,
+};
+
+export function getRandomColor() {
+  const colorKeys = Object.keys(Colors);
+  const colIndx = Math.floor(Math.random() * colorKeys.length);
+  return Colors[colorKeys[colIndx]];
+}
