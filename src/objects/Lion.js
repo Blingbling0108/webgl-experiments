@@ -522,8 +522,8 @@ export default class Lion {
             // --- 动画结束 ---
 
             // 检查是否落地
-            if (newY <= this.groundY) {
-                this.threegroup.position.y = this.groundY;
+            if (newY <= this.groundY-10) {
+                this.threegroup.position.y = this.groundY-10;
                 this.velocity = 0;
                 this.isJumping = false;
                 // 落地后缓慢恢复站立

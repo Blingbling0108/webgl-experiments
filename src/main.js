@@ -171,14 +171,14 @@ function animate() {
   const lionHAngle = Math.min(Math.max(tempHA, -Math.PI/3), Math.PI/3);
   const lionVAngle = Math.min(Math.max(tempVA, -Math.PI/3), Math.PI/3);
 
-  // 小鸡害羞逻辑
-  if (lionHAngle < -Math.PI/5 && !bird2.intervalRunning) {
+  // 小鸡害羞逻辑，只有当狮子视线小于-45度（-Math.PI/4）才害羞
+  if (lionHAngle < -Math.PI/4 && !bird2.intervalRunning) {
     bird2.lookAway(true);
     bird2.intervalRunning = true;
     bird2.behaviourInterval = setInterval(() => {
       bird2.lookAway(false);
     }, 1500);
-  } else if (lionHAngle >= -Math.PI/5 && bird2.intervalRunning) {
+  } else if (lionHAngle >= -Math.PI/4 && bird2.intervalRunning) {
     bird2.stare();
     clearInterval(bird2.behaviourInterval);
     bird2.intervalRunning = false;
