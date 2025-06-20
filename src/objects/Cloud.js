@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import Rain from './Rain.js';
 
 export default class Cloud {
   constructor({ position = new THREE.Vector3(0, 0, 0), scale = 1 } = {}) {
@@ -23,12 +24,15 @@ export default class Cloud {
       this.group.add(mesh);
       this.meshes.push(mesh);
     });
+    this.rain = new Rain();
+    this.group.add(this.rain.points);
     this.group.position.copy(position);
     this.group.scale.setScalar(scale);
     this.time = Math.random() * Math.PI * 2;
   }
 
   update(delta) {
+    this.rain.update(delta);
     this.time += delta;
     this.meshes.forEach((mesh, i) => {
       // 每个方块上下浮动和左右轻微摆动，带有错位感

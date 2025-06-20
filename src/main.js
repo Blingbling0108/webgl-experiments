@@ -14,6 +14,7 @@ import { FPSCounter } from './utils/counter.js';
 import './styles/main.css';
 import Bird from './objects/Bird.js';
 import Cloud from './objects/Cloud.js';
+import Mushroom from './objects/Mushroom.js';
 
 // 初始化场景、相机、渲染器
 initScene();
@@ -49,6 +50,21 @@ const forest = new Forest({
 
 scene.add(forest.group);
 
+// 创建蘑菇
+const mushroom1 = new Mushroom();
+mushroom1.group.position.set(290, -120, -150);
+mushroom1.group.scale.setScalar(2);
+scene.add(mushroom1.group);
+
+const mushroom2 = new Mushroom();
+mushroom2.group.position.set(-240, -120, -60);
+mushroom2.group.scale.setScalar(1.5);
+scene.add(mushroom2.group);
+
+const mushroom3 = new Mushroom();
+mushroom3.group.position.set(-280, -120, -10);
+scene.add(mushroom3.group);
+
 // 创建岛屿
 const island = new Island({ position: new THREE.Vector3(0, -200, -300), scale: 1 });
 scene.add(island.group);
@@ -58,7 +74,7 @@ const bird2 = new Bird();
 scene.add(bird2.group);
 
 // 创建云朵并放在狮子右上方
-const cloud = new Cloud({ position: new THREE.Vector3(180, 180, 150), scale: 4 });
+const cloud = new Cloud({ position: new THREE.Vector3(170, 180, 150), scale: 4 });
 scene.add(cloud.group);
 
 // 创建控制器
@@ -242,6 +258,9 @@ function animate() {
   // 狮子始终正视前方
   lion.threegroup.rotation.set(0, 0, 0);
 
+  // 更新云朵（包含下雨效果）
+  cloud.update(deltaTime);
+
   // 计算狮子视线角度
   const tempHA = (mousePos.x - windowHalfX) / 200;
   const tempVA = (mousePos.y - windowHalfY) / 200;
@@ -265,9 +284,6 @@ function animate() {
   bird2.bodyBird.material.color.setRGB(bird2.color.r, bird2.color.g, bird2.color.b);
 
   saturn.planet.rotation.y -= .01;
-
-  // 更新云朵动画
-  cloud.update(deltaTime);
 
   // 摄像机入场动画
   if (cameraAnim.running) {
