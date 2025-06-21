@@ -319,3 +319,20 @@ window.addEventListener('mouseup', () => {
   windAudio.pause();
   windAudio.currentTime = 0;
 });
+
+// 触摸控制风扇交互（移动端）
+window.addEventListener('touchmove', (e) => {
+  if (e.touches.length > 0) {
+    mousePos.x = e.touches[0].clientX;
+    mousePos.y = e.touches[0].clientY;
+  }
+});
+window.addEventListener('touchstart', () => {
+  isBlowing = true;
+  if (windAudio.paused) windAudio.play();
+});
+window.addEventListener('touchend', () => {
+  isBlowing = false;
+  windAudio.pause();
+  windAudio.currentTime = 0;
+});
