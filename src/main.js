@@ -175,7 +175,7 @@ const saturn = new Saturn();
 saturn.planet.position.set(0, 80, -100);
 
 // 添加背景音乐
-const bgm = new Audio('/calm2.ogg');
+const bgm = new Audio('calm2.ogg');
 bgm.loop = true;
 bgm.volume = 0.5;
 window.addEventListener('click', () => {
@@ -185,7 +185,7 @@ window.addEventListener('click', () => {
 bgm.play().catch(() => {});
 
 // 添加风声音效
-const windAudio = new Audio('/wind.ogg');
+const windAudio = new Audio('wind.ogg');
 windAudio.loop = true;
 windAudio.volume = 0.7;
 

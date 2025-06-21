@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/LOGO.png" />
+    <link rel="icon" type="image/svg+xml" href="LOGO.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>webgl-experiments</title>
   </head>
@@ -36,7 +36,7 @@
       .start-bg {
         position: absolute;
         left: 0; top: 0; right: 0; bottom: 0;
-        background: url('/background.png') center center/cover no-repeat;
+        background: url('background.png') center center/cover no-repeat;
         filter: blur(3px) brightness(0.8);
         z-index: 1;
        transform: scale(1.5);
@@ -105,7 +105,7 @@
     <script>
       window.addEventListener('DOMContentLoaded', () => {
         const startBtn = document.getElementById('start-btn');
-        const plop = new Audio('/plop.ogg');
+        const plop = new Audio('plop.ogg');
         startBtn.addEventListener('pointerdown', () => {
           plop.currentTime = 0;
           plop.play();

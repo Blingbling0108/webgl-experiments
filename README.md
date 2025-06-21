@@ -4,6 +4,8 @@
 [![node](https://img.shields.io/badge/node-%3E=16.0.0-brightgreen)](https://nodejs.org/)
 [![status](https://img.shields.io/badge/status-active-brightgreen)]()
 
+[**在线体验 (Live Demo)**](https://blingbling0108.github.io/webgl-experiments/)
+
 ---
 
 ## 项目简介
@@ -139,6 +141,8 @@ webgl-experiments/
 
 ## 截图/演示
 
+[**点击此处在线体验 (Click here for a Live Demo)**](https://blingbling0108.github.io/webgl-experiments/)
+
 > 建议在此处插入项目主要界面截图或动图，帮助用户直观了解效果。
 
 ---
@@ -162,5 +166,3 @@ webgl-experiments/
 如需更详细的 API 或开发文档，请查阅 `docs/` 目录或源码注释。
 
 ---
-
-如需进一步美化或补充徽章、截图等内容，可随时告知！
