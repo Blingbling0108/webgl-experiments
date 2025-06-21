@@ -322,17 +322,20 @@ window.addEventListener('mouseup', () => {
 
 // 触摸控制风扇交互（移动端）
 window.addEventListener('touchmove', (e) => {
+  e.preventDefault();
   if (e.touches.length > 0) {
     mousePos.x = e.touches[0].clientX;
     mousePos.y = e.touches[0].clientY;
   }
-});
-window.addEventListener('touchstart', () => {
+}, { passive: false });
+window.addEventListener('touchstart', (e) => {
+  e.preventDefault();
   isBlowing = true;
   if (windAudio.paused) windAudio.play();
-});
-window.addEventListener('touchend', () => {
+}, { passive: false });
+window.addEventListener('touchend', (e) => {
+  e.preventDefault();
   isBlowing = false;
   windAudio.pause();
   windAudio.currentTime = 0;
-});
+}, { passive: false });
