@@ -178,11 +178,6 @@ saturn.planet.position.set(0, 80, -100);
 const bgm = new Audio('calm2.ogg');
 bgm.loop = true;
 bgm.volume = 0.5;
-window.addEventListener('click', () => {
-  if (bgm.paused) bgm.play();
-});
-// 自动尝试播放（部分浏览器需用户交互后才允许）
-bgm.play().catch(() => {});
 
 // 添加风声音效
 const windAudio = new Audio('wind.ogg');
@@ -202,8 +197,22 @@ camera.position.z = cameraAnim.fromZ;
 window.addEventListener('DOMContentLoaded', () => {
   const overlay = document.getElementById('start-overlay');
   const startBtn = document.getElementById('start-btn');
+  const plop = new Audio('plop.ogg');
+
   startBtn.addEventListener('click', () => {
+    // 1. 立即执行UI反馈：播放短音效并开始CSS动画
+    plop.currentTime = 0;
+    plop.play();
     overlay.classList.add('rip');
+
+    // 2. 稍微延迟播放背景音乐，避免阻塞UI线程
+    setTimeout(() => {
+        if (bgm.paused) {
+            bgm.play().catch(() => {});
+        }
+    }, 100); // 延迟100毫秒，用户无感知，但足以分离线程
+
+    // 3. 在CSS动画结束后，彻底隐藏覆盖层并启动游戏
     setTimeout(() => {
       overlay.style.display = 'none';
       cameraAnim.running = true;
@@ -322,20 +331,32 @@ window.addEventListener('mouseup', () => {
 
 // 触摸控制风扇交互（移动端）
 window.addEventListener('touchmove', (e) => {
-  e.preventDefault();
+  // 仅当游戏进行中（覆盖层隐藏时）才阻止页面默认的滚动行为
+  const overlay = document.getElementById('start-overlay');
+  if (window.getComputedStyle(overlay).display === 'none') {
+    e.preventDefault();
+  }
+
   if (e.touches.length > 0) {
     mousePos.x = e.touches[0].clientX;
     mousePos.y = e.touches[0].clientY;
   }
 }, { passive: false });
 window.addEventListener('touchstart', (e) => {
+  const overlay = document.getElementById('start-overlay');
+  // 如果开始界面是可见的，则不执行任何操作，允许按钮的点击事件正常触发
+  if (window.getComputedStyle(overlay).display !== 'none') {
+    return;
+  }
+  
+  // 游戏开始后，阻止默认行为并开启风扇
   e.preventDefault();
   isBlowing = true;
   if (windAudio.paused) windAudio.play();
 }, { passive: false });
-window.addEventListener('touchend', (e) => {
-  e.preventDefault();
+window.addEventListener('touchend', () => {
+  // touchend事件只需停止风扇即可，无需阻止默认行为
   isBlowing = false;
   windAudio.pause();
   windAudio.currentTime = 0;
-}, { passive: false });
+});

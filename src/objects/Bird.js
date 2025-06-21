@@ -94,7 +94,7 @@ export default class Bird {
     this.group.position.x = 200;
     this.group.position.y = -110;
 
-    this.chickenAudio = new Audio('/chicken.ogg');
+    this.chickenAudio = new Audio('chicken.ogg');
     this.chickenAudio.volume = 0.7;
   }
 
